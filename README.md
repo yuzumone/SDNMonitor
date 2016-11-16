@@ -11,7 +11,8 @@
 ## ToDo
 - [x] IP Address and port number verification
 - [x] SDN switches list
-- [ ] Priorities list
+- [x] Priorities list
+- [x] Bandwidth prediction graph
 - [ ] Bandwidth usage graph
 - [ ] System messages list
 
