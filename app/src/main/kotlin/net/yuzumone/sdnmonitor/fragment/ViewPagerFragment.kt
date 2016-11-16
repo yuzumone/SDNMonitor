@@ -74,6 +74,8 @@ class ViewPagerFragment : BaseFragment() {
         binding.tab.setupWithViewPager(binding.pager)
         val priorityFragment = PriorityFragment()
         adapter.add("Priority", priorityFragment)
+        val predictionFragment = PredictionFragment.newInstance(id)
+        adapter.add("Prediction", predictionFragment)
     }
 
     class ViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
