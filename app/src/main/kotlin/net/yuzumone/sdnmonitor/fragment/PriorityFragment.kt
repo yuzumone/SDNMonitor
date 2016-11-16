@@ -32,10 +32,6 @@ class PriorityFragment : BaseFragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
-
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         getComponent().inject(this)
