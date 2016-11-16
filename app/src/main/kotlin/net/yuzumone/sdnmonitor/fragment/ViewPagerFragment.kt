@@ -26,12 +26,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import net.yuzumone.sdnmonitor.databinding.FragmentViewpagerBinding
+import net.yuzumone.sdnmonitor.util.OnToggleElevationListener
 import java.util.*
 
 class ViewPagerFragment : BaseFragment() {
 
     private lateinit var binding: FragmentViewpagerBinding
     private lateinit var id: String
+    private lateinit var listener: OnToggleElevationListener
 
     companion object {
         private val ARG_ID = "id"
@@ -53,6 +55,9 @@ class ViewPagerFragment : BaseFragment() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         getComponent().inject(this)
+        if (context is OnToggleElevationListener) {
+            listener = context
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,9 +68,12 @@ class ViewPagerFragment : BaseFragment() {
     }
 
     fun initView() {
-        val adapter = ViewPagerAdapter(fragmentManager)
+        listener.onToggleElevation(false)
+        val adapter = ViewPagerAdapter(childFragmentManager)
         binding.pager.adapter = adapter
         binding.tab.setupWithViewPager(binding.pager)
+        val priorityFragment = PriorityFragment()
+        adapter.add("Priority", priorityFragment)
     }
 
     class ViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {

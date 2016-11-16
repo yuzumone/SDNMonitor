@@ -27,8 +27,9 @@ import net.yuzumone.sdnmonitor.databinding.ActivityMainBinding
 import net.yuzumone.sdnmonitor.di.ActivityComponent
 import net.yuzumone.sdnmonitor.di.ActivityModule
 import net.yuzumone.sdnmonitor.fragment.LoginFragment
+import net.yuzumone.sdnmonitor.util.OnToggleElevationListener
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnToggleElevationListener {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -68,6 +69,11 @@ class MainActivity : AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
+    }
+
+    override fun onToggleElevation(bool: Boolean) {
+        val elevation = if (bool) resources.getDimension(R.dimen.elevation) else 0F
+        binding.toolbar.elevation = elevation
     }
 
     fun getComponent(): ActivityComponent {

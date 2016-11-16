@@ -19,6 +19,7 @@ package net.yuzumone.sdnmonitor.di
 
 import dagger.Subcomponent
 import net.yuzumone.sdnmonitor.fragment.LoginFragment
+import net.yuzumone.sdnmonitor.fragment.PriorityFragment
 import net.yuzumone.sdnmonitor.fragment.SwitchListFragment
 import net.yuzumone.sdnmonitor.fragment.ViewPagerFragment
 
@@ -30,4 +31,6 @@ interface FragmentComponent {
     fun inject(fragment: SwitchListFragment)
 
     fun inject(fragment: ViewPagerFragment)
+
+    fun inject(fragment: PriorityFragment)
 }
