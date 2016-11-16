@@ -26,6 +26,7 @@ import android.widget.Toast
 import net.yuzumone.sdnmonitor.R
 import net.yuzumone.sdnmonitor.api.MonitorClient
 import net.yuzumone.sdnmonitor.databinding.FragmentSwitchListBinding
+import net.yuzumone.sdnmonitor.util.OnToggleElevationListener
 import net.yuzumone.sdnmonitor.widget.SwitchArrayAdapter
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
@@ -37,6 +38,7 @@ class SwitchListFragment : BaseFragment() {
 
     private lateinit var binding: FragmentSwitchListBinding
     private lateinit var adapter: SwitchArrayAdapter
+    private lateinit var listener: OnToggleElevationListener
     @Inject
     lateinit var monitorClient: MonitorClient
     @Inject
@@ -52,9 +54,13 @@ class SwitchListFragment : BaseFragment() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         getComponent().inject(this)
+        if (context is OnToggleElevationListener) {
+            listener = context
+        }
     }
 
     fun initView() {
+        listener.onToggleElevation(true)
         adapter = SwitchArrayAdapter(activity)
         binding.listSwitch.adapter = adapter
         binding.listSwitch.setOnItemClickListener { adapterView, view, i, l ->
@@ -77,6 +83,7 @@ class SwitchListFragment : BaseFragment() {
                 .doOnCompleted { binding.swipeRefresh.isRefreshing = false }
                 .subscribe (
                         { response ->
+                            adapter.clear()
                             adapter.addAll(response)
                             adapter.notifyDataSetChanged()
                         },
