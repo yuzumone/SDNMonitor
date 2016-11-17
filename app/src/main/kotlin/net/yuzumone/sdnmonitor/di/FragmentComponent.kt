@@ -34,4 +34,6 @@ interface FragmentComponent {
     fun inject(fragment: PredictionFragment)
 
     fun inject(fragment: UsageFragment)
+
+    fun inject(fragment: StatusFragment)
 }
