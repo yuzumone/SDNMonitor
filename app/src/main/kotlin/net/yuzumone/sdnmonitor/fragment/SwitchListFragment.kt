@@ -19,9 +19,7 @@ package net.yuzumone.sdnmonitor.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import net.yuzumone.sdnmonitor.R
 import net.yuzumone.sdnmonitor.api.MonitorClient
@@ -47,6 +45,7 @@ class SwitchListFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentSwitchListBinding.inflate(inflater, container, false)
         initView()
+        setHasOptionsMenu(true)
         compositeSubscription.add(fetchSwitches())
         return binding.root
     }
@@ -91,6 +90,21 @@ class SwitchListFragment : BaseFragment() {
                             Toast.makeText(activity, error.message, Toast.LENGTH_SHORT).show()
                         }
                 )
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        activity.menuInflater.inflate(R.menu.menu_switch, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_status -> {
+                val fragment = StatusFragment()
+                fragmentManager.beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroy() {
