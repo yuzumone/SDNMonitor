@@ -76,6 +76,8 @@ class ViewPagerFragment : BaseFragment() {
         adapter.add("Priority", priorityFragment)
         val predictionFragment = PredictionFragment.newInstance(id)
         adapter.add("Prediction", predictionFragment)
+        val usageFragment = UsageFragment.newInstance(id)
+        adapter.add("Usage", usageFragment)
     }
 
     class ViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
