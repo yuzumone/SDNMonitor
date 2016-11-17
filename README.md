@@ -13,8 +13,9 @@
 - [x] SDN switches list
 - [x] Priorities list
 - [x] Bandwidth prediction graph
-- [ ] Bandwidth usage graph
-- [ ] System messages list
+- [x] Bandwidth usage graph
+- [x] System messages list
+- [ ] Improving graph styling
 
 ## Libraries
 This project uses some libraries.
