@@ -19,23 +19,25 @@ package net.yuzumone.sdnmonitor.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import net.yuzumone.sdnmonitor.R
 import net.yuzumone.sdnmonitor.api.MonitorClient
-import net.yuzumone.sdnmonitor.databinding.FragmentSwitchListBinding
+import net.yuzumone.sdnmonitor.databinding.FragmentStatusBinding
 import net.yuzumone.sdnmonitor.util.OnToggleElevationListener
-import net.yuzumone.sdnmonitor.widget.SwitchArrayAdapter
+import net.yuzumone.sdnmonitor.widget.StatusArrayAdapter
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
 
-class SwitchListFragment : BaseFragment() {
+class StatusFragment : BaseFragment() {
 
-    private lateinit var binding: FragmentSwitchListBinding
-    private lateinit var adapter: SwitchArrayAdapter
+    private lateinit var binding: FragmentStatusBinding
+    private lateinit var adapter: StatusArrayAdapter
     private lateinit var listener: OnToggleElevationListener
     @Inject
     lateinit var monitorClient: MonitorClient
@@ -43,9 +45,8 @@ class SwitchListFragment : BaseFragment() {
     lateinit var compositeSubscription: CompositeSubscription
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentSwitchListBinding.inflate(inflater, container, false)
+        binding = FragmentStatusBinding.inflate(inflater, container, false)
         initView()
-        setHasOptionsMenu(true)
         compositeSubscription.add(fetchSwitches())
         return binding.root
     }
@@ -60,14 +61,8 @@ class SwitchListFragment : BaseFragment() {
 
     fun initView() {
         listener.onToggleElevation(true)
-        adapter = SwitchArrayAdapter(activity)
-        binding.listSwitch.adapter = adapter
-        binding.listSwitch.setOnItemClickListener { adapterView, view, i, l ->
-            val switch = adapter.getItem(i)
-            val fragment = ViewPagerFragment.newInstance(switch.id)
-            fragmentManager.beginTransaction().replace(R.id.container, fragment)
-                    .addToBackStack(null).commit()
-        }
+        adapter = StatusArrayAdapter(activity)
+        binding.listStatus.adapter = adapter
         binding.swipeRefresh.setColorSchemeResources(R.color.colorPrimary)
         binding.swipeRefresh.setOnRefreshListener {
             compositeSubscription.clear()
@@ -76,7 +71,7 @@ class SwitchListFragment : BaseFragment() {
     }
 
     fun fetchSwitches(): Subscription {
-        return monitorClient.getSwitches()
+        return monitorClient.getStatuses()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnCompleted { binding.swipeRefresh.isRefreshing = false }
@@ -90,21 +85,6 @@ class SwitchListFragment : BaseFragment() {
                             Toast.makeText(activity, error.message, Toast.LENGTH_SHORT).show()
                         }
                 )
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        activity.menuInflater.inflate(R.menu.menu_switch, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_status -> {
-                val fragment = StatusFragment()
-                fragmentManager.beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit()
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroy() {

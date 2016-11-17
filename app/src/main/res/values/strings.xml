@@ -3,4 +3,5 @@
     <string name="ip_address">IP address</string>
     <string name="port_number">Port number</string>
     <string name="login">Login</string>
+    <string name="system_message">SystemMessage</string>
 </resources>
