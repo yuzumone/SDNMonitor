@@ -32,4 +32,6 @@ interface FragmentComponent {
     fun inject(fragment: PriorityFragment)
 
     fun inject(fragment: PredictionFragment)
+
+    fun inject(fragment: UsageFragment)
 }
