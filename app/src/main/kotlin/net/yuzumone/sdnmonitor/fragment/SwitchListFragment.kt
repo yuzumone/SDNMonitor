@@ -103,6 +103,11 @@ class SwitchListFragment : BaseFragment() {
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit()
                 return true
             }
+            R.id.menu_license -> {
+                val fragment = LicenseFragment()
+                fragmentManager.beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit()
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
     }
