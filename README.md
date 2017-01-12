@@ -8,6 +8,12 @@
 - Display bandwidth usage, statistics information, and so on
 - Server application is [dummy_response_switch](https://github.com/yuzumone/dummy_response_switch)
 
+## ScreenShot
+
+|login|priority|prediction|usage|
+|---|---|---|---|
+|![](./assets/screenshots/Screenshot_login.png)|![](./assets/screenshots/Screenshot_priority_information_list.png)|![](./assets/screenshots/Screenshot_prediction_graph.png)|![](./assets/screenshots/Screenshot_usage_graph.png)|
+
 ## ToDo
 - [x] IP Address and port number verification
 - [x] SDN switches list
