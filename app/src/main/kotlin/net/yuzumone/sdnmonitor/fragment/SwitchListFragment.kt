@@ -79,6 +79,10 @@ class SwitchListFragment : BaseFragment() {
         return monitorClient.getSwitches()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    if (!binding.swipeRefresh.isRefreshing)
+                        binding.swipeRefresh.isRefreshing = true
+                }
                 .doOnCompleted { binding.swipeRefresh.isRefreshing = false }
                 .subscribe (
                         { response ->
