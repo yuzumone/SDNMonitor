@@ -24,6 +24,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -74,6 +75,7 @@ class PredictionFragment : BaseFragment() {
         binding = FragmentPredictionBinding.inflate(inflater, container, false)
         initView()
         compositeSubscription.add(fetchPredictions())
+        compositeSubscription.add(fetchGuarantee())
         return binding.root
     }
 
@@ -82,6 +84,7 @@ class PredictionFragment : BaseFragment() {
         binding.swipeRefresh.setOnRefreshListener {
             compositeSubscription.clear()
             compositeSubscription.add(fetchPredictions())
+            compositeSubscription.add(fetchGuarantee())
         }
 
         val data = LineData()
@@ -116,6 +119,20 @@ class PredictionFragment : BaseFragment() {
                 )
     }
 
+    fun fetchGuarantee(): Subscription {
+        return monitorClient.getGuarantee(id)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { response ->
+                            addLimitLine(response)
+                        },
+                        { error ->
+                            Toast.makeText(activity, error.message, Toast.LENGTH_SHORT).show()
+                        }
+                )
+    }
+
     fun bindData(response: List<Bandwidth>) {
         val entries = ArrayList<Entry>()
         for ((index, value) in response.withIndex()) {
@@ -125,6 +142,17 @@ class PredictionFragment : BaseFragment() {
         val lineData = LineData(dataSet)
         binding.chart.data = lineData
         binding.chart.invalidate()
+    }
+
+    fun addLimitLine(response: Bandwidth) {
+        val limit = LimitLine(response.bandwidth.toFloat(), "guarantee")
+        limit.apply {
+            label = response.bandwidth.toString()
+            textSize = 10f
+            lineColor = Color.RED
+            lineWidth = 2f
+        }
+        binding.chart.axisLeft.addLimitLine(limit)
     }
 
     override fun onDestroy() {
