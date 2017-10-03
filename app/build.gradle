@@ -3,15 +3,15 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
     dataBinding {
         enabled = true
     }
     defaultConfig {
         applicationId "net.yuzumone.sdnmonitor"
         minSdkVersion 23
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -30,22 +30,21 @@ android {
         test.java.srcDirs += 'src/test/kotlin'
         androidTest.java.srcDirs += 'src/androidTest/kotlin'
     }
-    repositories {
-        maven { url "https://jitpack.io" }
-    }
 }
 
 kapt {
     generateStubs = true
 }
 
+ext.support_lib_version = '26.0.1'
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.0'
-    compile 'com.android.support:design:25.3.0'
+    compile "com.android.support:appcompat-v7:$support_lib_version"
+    compile "com.android.support:design:$support_lib_version"
     kapt 'com.android.databinding:compiler:2.2.0'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.0'
     compile 'com.google.dagger:dagger:2.7'
@@ -60,7 +59,4 @@ dependencies {
     compile 'io.reactivex:rxjava:1.1.6'
     testCompile 'junit:junit:4.12'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-}
-repositories {
-    mavenCentral()
 }
